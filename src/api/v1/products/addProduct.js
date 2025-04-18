@@ -9,7 +9,7 @@ cloudinary.config({
 
 const addProduct = async function (req, res, next) {
     try {
-        const { title, description, isused, price } = req.body
+        const { title, description, isused, price ,categId} = req.body
         const userid = req.user.id
         const image = req.files.image
         const result = await cloudinary.uploader.upload(image.tempFilePath)

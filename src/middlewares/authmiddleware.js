@@ -1,7 +1,7 @@
 const jwt=require('jsonwebtoken')
 function verifytoken(req,res,next){
     let token= req.headers["authorization"]?.split(" ")[1]
-    console.log('token',token)
+    console.log('my token',token)
     if(token){
         const user=jwt.verify(token,'secretkey')
         req.user=user
