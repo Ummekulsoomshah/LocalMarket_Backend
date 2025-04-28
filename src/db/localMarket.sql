@@ -40,3 +40,19 @@ foreign key (userid) references user(id),
 created_at timestamp default current_timestamp
 )
 SELECT * FROM items WHERE id=1
+
+
+CREATE TABLE checkout (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    email VARCHAR(100),
+    phone VARCHAR(20),
+    street VARCHAR(255),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    zip VARCHAR(20),
+    amount DECIMAL(10, 2),
+    payment_status VARCHAR(50) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
