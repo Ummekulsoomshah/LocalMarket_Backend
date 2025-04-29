@@ -16,27 +16,24 @@ const corsOptions={
     origin:"http://localhost:3001"
 }
 app.use(fileupload({
-    useTempFiles:true
-}))
+  useTempFiles: true
+}));
+
 app.use(cors(corsOptions));
 
-const seedAdmin=async()=>{
-    const admin=await db.query('SELECT * FROM user WHERE userrole=?',['admin'])
-    if(!admin){
-        try{
-            const hashpassword=await bcrypt.hash('admin',10)
-            const newadmin=await db.query('INSERT INTO user (accountname,email,accountpassword,userrole) VALUES (?,?,?,?)',['admin','admin@gmail.com',hashpassword,'admin'])
-
-            console.log('admin seeded')
-        }catch(err){
-            console.log(err)
-        }
-    }else{
-        const user=await db.query('SELECT * FROM user WHERE userrole=?',['admin'])
+const seedAdmin = async () => {
+  const [admin] = await db.query('SELECT * FROM user WHERE userrole=?', ['admin']);
+  if (admin.length === 0) {
+    try {
+      const hashpassword = await bcrypt.hash('admin', 10);
+      await db.query('INSERT INTO user (accountname,email,accountpassword,userrole) VALUES (?,?,?,?)', ['admin', 'admin@gmail.com', hashpassword, 'admin']);
+      console.log('Admin seeded');
+    } catch (err) {
+      console.log(err);
     }
-}
-seedAdmin()
-
+  }
+};
+seedAdmin();
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
@@ -47,4 +44,11 @@ app.use(categores)
 app.use(products)
 app.use(cart)
 
-module.exports=app;
+app.use('/user', userRoute);
+app.use(categores);
+app.use(products);
+app.use('/bussiness', bussinessRoute);
+app.use('/admin', adminRoute);
+app.use('/checkout', checkoutRoute); // ✅ NEW
+
+module.exports = app;
