@@ -36,13 +36,8 @@ const seedAdmin = async () => {
 seedAdmin();
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}))
-app.use('/user',userRoute)
-app.use('/bussiness',bussinessRoute)
-app.use('/admin',adminRoute)
-app.use(categores)
-app.use(products)
-app.use(cart)
+app.use(express.urlencoded({ extended: true }));
+app.use(fileupload({ useTempFiles: true }));
 
 app.use('/user', userRoute);
 app.use(categores);

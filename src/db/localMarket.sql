@@ -44,6 +44,7 @@ SELECT * FROM items WHERE id=1
 
 <<<<<<< HEAD
 
+<<<<<<< HEAD
 INSERT INTO items (title, description, price, fields, isused, userid, image)
 VALUES 
 ('Smartphone X10', 'High performance smartphone with extended battery life.', '25000', '{"Brand":"Lenovo","language":"english"}', 0, 1, 'https://cdn.pixabay.com/photo/2016/12/09/11/33/smartphone-1894723_1280.jpg'),
@@ -92,3 +93,23 @@ CREATE TABLE checkout (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 >>>>>>> c8d72c0980f7d87a8efc4129aab5b183c7bc4974
+=======
+-- CREATE TABLE checkout (
+--   id INT AUTO_INCREMENT PRIMARY KEY,
+--   user_id INT,
+--   first_name VARCHAR(100),
+--   last_name VARCHAR(100),
+--   email VARCHAR(255),
+--   phone VARCHAR(20),
+--   street VARCHAR(255),
+--   city VARCHAR(100),
+--   state VARCHAR(100),
+--   zip VARCHAR(20),
+--   amount DECIMAL(10, 2),
+--   payment_status VARCHAR(20) DEFAULT 'Pending',
+--   transaction_id VARCHAR(100),
+--   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+-- );
+SELECT * FROM checkout WHERE email = 'ali@gmail.com';
+>>>>>>> 0637ab29df2ae02e7b450cad965ccfbab3bfbc47
