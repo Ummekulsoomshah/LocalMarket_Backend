@@ -8,13 +8,17 @@ const products = require('./routes/products');
 const cart = require('./routes/cart');
 const checkoutRoutes = require('./routes/checkout.route');
 const payfastRoutes = require('./routes/payfast.route');
-
+const jwt = require('jsonwebtoken');
 const db = require('./db/db.config');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const fileupload = require('express-fileupload');
 const dotenv = require('dotenv').config();
 
+const shopRoutes = require('./routes/shop.route');
+
+// const secretKey = process.env.SECRET_KEY;
+// console.log(secretKey);
 // Setup CORS
 const corsOptions = {
   origin: "http://localhost:3000", // change if needed
@@ -52,5 +56,5 @@ app.use(categories);
 app.use(products);
 app.use('/api/checkout', checkoutRoutes);  // POST /api/checkout
 app.use('/api/payfast', payfastRoutes);    // POST /api/payfast
-
+app.use('/api/items', shopRoutes);
 module.exports = app;

@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/lib/user/checkUserPass.js
 const db = require('../../db/db.config')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -7,7 +8,7 @@ const checkUserPass = async (user) => {
     try {
         const [userdb] = await db.query('SELECT * from user where email=?', [email])
         console.log('userdb', userdb)
-        if (!user) {
+        if (!userdb || userdb.length === 0) {
             const error = new Error('user not found')
             error.status = 404
             throw error

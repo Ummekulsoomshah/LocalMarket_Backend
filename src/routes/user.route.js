@@ -5,9 +5,11 @@ const userLogin=require('../api/v1/user/userLogin')
 
 
 
-router.post('/signup',authMiddleware,userSignup)
+// router.post('/signup',authMiddleware,userSignup)
 router.post('/login',authMiddleware,userLogin)
 
+router.post('/signup', userSignup)   // ✅
+// router.post('/login', userLogin)     // ✅
 
 
 module.exports=router
