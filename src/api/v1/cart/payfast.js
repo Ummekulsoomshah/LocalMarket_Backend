@@ -1,7 +1,7 @@
 
 const db = require('../../../db/db.config');
 
-exports.createPaymentLink = async (req, res) => {
+const createPaymentLink = async (req, res) => {
   try {
     const { amount, email, firstName, lastName, checkoutId } = req.body;
 
@@ -31,7 +31,7 @@ exports.createPaymentLink = async (req, res) => {
   }
 };
 
-exports.processPaymentNotification = async (req, res) => {
+const processPaymentNotification = async (req, res) => {
   try {
     console.log('Received notification:', req.body);  // Log the entire notification to inspect the incoming data
 
@@ -74,3 +74,4 @@ exports.processPaymentNotification = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+module.exports={createPaymentLink,processPaymentNotification}

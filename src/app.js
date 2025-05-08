@@ -6,6 +6,7 @@ const adminRoute=require('./routes/admin.route')
 const categores=require('./routes/categories')
 const products=require('./routes/products')
 const cart=require('./routes/cart')
+const checkoutRoute=require('./routes/checkout.route')
 const db=require('./db/db.config')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
@@ -44,6 +45,7 @@ app.use(categores);
 app.use(products);
 app.use('/bussiness', bussinessRoute);
 app.use('/admin', adminRoute);
-app.use('/checkout', checkoutRoute); // ✅ NEW
+app.use('/checkout', checkoutRoute); 
+app.use(cart)
 
 module.exports = app;

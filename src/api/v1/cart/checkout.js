@@ -1,6 +1,6 @@
 const db = require('../../../db/db.config');
 
-exports.createCheckout = async (req, res) => {
+const createCheckout = async (req, res) => {
   try {
     const {
       firstName, lastName, email, phone,
@@ -21,3 +21,4 @@ exports.createCheckout = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+module.exports=createCheckout
