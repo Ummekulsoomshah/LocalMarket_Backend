@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/api/v1/products/getProductsDetails.js
 const db=require('../../../db/db.config')
 const getProductDetails=async function(req,res,next) {
     const {insertid}=req.params

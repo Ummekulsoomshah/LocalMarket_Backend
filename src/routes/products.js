@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/routes/products.js
 const router=require('express').Router()
 const addProduct = require('../api/v1/products/addProduct')
 const getCategoryWiseProducts = require('../api/v1/products/getCategoryWiseProducts')

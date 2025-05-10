@@ -12,7 +12,7 @@ const userSignup = async function (req, res, next) {
     const user = { name, email, hashpassword, role }
     try {
         const id = await addUser(user)
-        jwt.sign({ id: id, role: role }, 'secretkey', (err, token) => {
+        jwt.sign({ id: id, role: role }, process.env.JWT_SECRET, (err, token)  => {
             res.status(200).json({
                 token,
                 message: 'User registered successfully'

@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/api/v1/category/getCategoriesFields.js
 const { getFields } = require("../../../lib/category/getFields");
 
 const getCategoriesFields = async function (req, res, next) {

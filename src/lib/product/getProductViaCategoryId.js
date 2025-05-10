@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/lib/product/getProductViaCategoryId.js
 const db=require('../../db/db.config')
 const getProductViaCategoryId=(categId)=>{
     try {

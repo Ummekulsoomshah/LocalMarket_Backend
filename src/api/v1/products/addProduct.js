@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/api/v1/products/addProduct.js
 const addProductData = require('../../../lib/product/addProductData')
 const cloudinary = require('cloudinary').v2
 const fs = require('fs')

@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/lib/product/addProductData.js
 const db = require('../../db/db.config')
 const addProductData = async (product) => {
     const { title, description, price, fields, categId,isused, userid, result ,quantity} = product

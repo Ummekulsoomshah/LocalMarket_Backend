@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/lib/order/addPlacedOrder.js
 const db = require('../../db/db.config')
 const addPlacedOrder = async (userId, cartItems) => {
     try {

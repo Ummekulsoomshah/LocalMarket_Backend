@@ -1,3 +1,4 @@
+//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/db/db.config.js
 const mysql = require('mysql2/promise');
 require('dotenv').config(); // Load environment variables from .env file
 // Log environment variables to verify
