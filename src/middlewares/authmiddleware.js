@@ -1,36 +1,25 @@
 // //LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/middlewares/authmiddleware.js
-// const jwt=require('jsonwebtoken')
-// function verifytoken(req,res,next){
-//     let token= req.headers["authorization"]?.split(" ")[1]
-//     console.log('my token',token)
-//     if(token){
-//         const user=jwt.verify(token,'secretkey')
-//         req.user=user
-//         req.token=token
-//         next()
-//     }else{
-//         res.status(401).send('Unauthorized')
-
-//     }
-// }
-// module.exports=verifytoken
 const jwt = require('jsonwebtoken');
 
 function verifytoken(req, res, next) {
-    let token = req.headers["authorization"]?.split(" ")[1];
+    const authHeader = req.headers["authorization"];
+    const token = authHeader?.split(" ")[1];
+
+    console.log('Authorization Header:', authHeader);
     console.log('Token Received:', token);
 
-    if (token) {
-        try {
-            const user = jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
-            req.user = user;
-            req.token = token;
-            next();
-        } catch (err) {
-            res.status(403).json({ message: 'Invalid or expired token' });
-        }
-    } else {
-        res.status(401).send('Unauthorized');
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized - No token provided' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, 'mySuperSecretKey123');
+        req.user = decoded; // Attach decoded user info to request
+        next();
+        console.log("Decoded User in Middleware:", decoded);
+    } catch (err) {
+        console.error("JWT verification error:", err.message);
+        return res.status(403).json({ message: 'Invalid or expired token' });
     }
 }
 

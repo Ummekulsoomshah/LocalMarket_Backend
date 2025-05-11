@@ -1,37 +1,34 @@
 // //LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/lib/user/checkUserPass.js
-
 const db = require('../../db/db.config.js'); // Your database query module
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 async function checkUserPass(email, plainPassword) {
     try {
-      // Properly extract rows from query result
-      const [rows] = await db.query('SELECT * FROM user WHERE email = ?', [email]);
-  
-      // If no user is found, throw error
-      if (rows.length === 0) {
-        throw new Error('User not found');
-      }
-  
-      const user = rows[0]; // Correctly get the first user
-  
-      // Compare the provided password with the hashed one
-      const isMatch = await bcrypt.compare(plainPassword, user.password);
-  
-      if (!isMatch) {
-        throw new Error('Incorrect password');
-      }
-  
-      return user; // Return user info if authenticated
-  
+        // Properly extract rows from query result
+        const [rows] = await db.query('SELECT * FROM user WHERE email = ?', [email]);
+
+        // If no user is found, throw error
+        if (rows.length === 0) {
+            throw new Error('User not found');
+        }
+
+        const user = rows[0]; // Correctly get the first user
+
+        // Compare the provided password with the hashed one
+        const isMatch = await bcrypt.compare(plainPassword, user.password);
+
+        if (!isMatch) {
+            throw new Error('Incorrect password');
+        }
+
+        return user; // Return user info if authenticated
     } catch (error) {
-      throw error; // Let caller handle the error
+        throw error; // Let caller handle the error
     }
-  }
-  
+}
 
 module.exports = checkUserPass;
+
 // const db = require('../../db/db.config')
 // const bcrypt = require('bcrypt')
 // const jwt = require('jsonwebtoken')

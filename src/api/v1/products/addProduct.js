@@ -1,56 +1,93 @@
-//LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/api/v1/products/addProduct.js
-const addProductData = require('../../../lib/product/addProductData')
-const cloudinary = require('cloudinary').v2
-const fs = require('fs')
-require('dotenv').config()
 
-cloudinary.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
+// // // //  //LocalMarket_Backend/LocalMarketBackend/LocalMarket_Backend/src/api/v1/products/addProduct.js
+const path = require('path');
+const fs = require('fs').promises;
+const addProductData = require('./addProductData');
 
-const addProduct = async function (req, res, next) {
+// Save the image from base64 to file
+const saveImage = async (imageBase64, uploadDir) => {
     try {
-        const { title, description, isused, price, categId, quantity } = req.body
-        console.log(categId)
-        const userid = req.user.id
-        const image = req.files?.image
+        const imageBuffer = Buffer.from(imageBase64, 'base64');
+        const imageName = `${Date.now()}.png`; // Make sure you append a unique timestamp
+        const imagePath = path.join(uploadDir, imageName);
+        const imageUrl = `/uploads/${imageName}`; // Image URL to be saved in DB
 
-        if (!image) {
-            return res.status(400).json({ message: 'Image is required' })
-        }
+        await fs.mkdir(uploadDir, { recursive: true });
+        await fs.writeFile(imagePath, imageBuffer);
 
-        const result = await cloudinary.uploader.upload(image.tempFilePath)
-        fs.unlinkSync(image.tempFilePath) // Cleanup temp file
+        return imageUrl; // Correct image URL to be saved in DB
+    } catch (err) {
+        console.error('Image saving error:', err);
+        throw new Error('Error saving image');
+    }
+};
 
-        const fields = JSON.parse(req.body.fields)
-        console.log('fields', fields)
+const addProduct = async (req, res) => {
+    const startTime = Date.now();
 
-        const product = {
+    const {
+        title,
+        description,
+        price,
+        quantity,
+        categId,
+        imageBase64,
+        fields,
+        isused,
+        size
+    } = req.body;
+
+    // Step 1: Auth checks
+    if (!req.user || !req.user.id || !req.user.userrole) {
+        return res.status(401).json({ message: 'Unauthorized: invalid token', processingTime: Date.now() - startTime });
+    }
+
+    if (req.user.userrole !== 'business') {
+        return res.status(403).json({ message: 'Forbidden: Only business users can add products', processingTime: Date.now() - startTime });
+    }
+
+    const userId = req.user.id;
+
+    // Step 2: Input validation
+    if (!title || !description || !price || !quantity || !categId || !imageBase64) {
+        return res.status(400).json({ message: 'Missing required fields', processingTime: Date.now() - startTime });
+    }
+
+    console.log("✅ Authenticated user ID:", userId);
+
+    try {
+        const uploadDir = path.join(__dirname, '../../../../uploads');
+        const imageUrl = await saveImage(imageBase64, uploadDir);
+
+        const newProduct = {
             title,
             description,
             price,
-            fields,
-            isused,
-            userid,
+            quantity,
             categId,
-            result,
-            quantity
+            fields: fields || {},
+            isused: isused || 0,
+            size: size || null,
+            userId,
+            image: imageUrl
+        };
+
+        const result = await addProductData(newProduct);
+
+        if (!result.success) {
+            throw new Error('Database insertion failed');
         }
 
-        const queryresult = await addProductData(product)
-        const insertid = queryresult.insertId
-        console.log('insertid', insertid)
+        return res.status(201).json({
+            message: 'Product added successfully',
+            product: result.product,
+            processingTime: Date.now() - startTime
+        });
 
-        res.status(200).json({
-            message: "Post added successfully",
-            insertid
-        })
-    } catch (error) {
-        console.error('Error:', error.message)
-        res.status(500).json({ message: "Server error", error: error.message })
+    } catch (err) {
+        console.error('Add product error:', err);
+        return res.status(500).json({ message: err.message, processingTime: Date.now() - startTime });
     }
-}
+};
 
-module.exports = addProduct
+module.exports = addProduct;
