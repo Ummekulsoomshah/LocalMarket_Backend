@@ -1,7 +1,9 @@
+
 const express = require('express');
 const router = express.Router();
-const checkoutController = require('../api/v1/cart/checkout');
+const checkout = require('../api/v1/cart/checkout');
 
-router.post('/', checkoutController.createCheckout); // Save checkout data
+router.post('/checkout', checkout);
 
 module.exports = router;
+

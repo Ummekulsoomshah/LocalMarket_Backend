@@ -1,5 +1,5 @@
 const getSellerStates=require('../../../lib/bussiness/getSellerStates')
-const SellerdashboardAnalytics=async(req ,res)=>{
+const SellerdashboardAnalytics=async(req ,res,next)=>{
     const id=req.user.id
     try {
         const result=await getSellerStates(id)

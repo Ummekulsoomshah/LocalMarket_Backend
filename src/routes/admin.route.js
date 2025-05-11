@@ -4,7 +4,7 @@ const dashboardAnalytics=require('../api/v1/admin/dashboardAnalytics')
 const authMiddleware=require('../middlewares/authmiddleware')
 
 
-router.post('/login',authMiddleware,userLogin)
+router.post('/login',userLogin)
 router.get('/dashboardAnalytics',dashboardAnalytics)
 // router.post('/catagory',adminController.catagoryAdd)
 

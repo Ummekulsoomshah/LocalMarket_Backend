@@ -11,7 +11,8 @@ const db=require('./db/db.config')
 const bcrypt=require('bcrypt')
 const jwt=require('jsonwebtoken')
 const cors=require('cors');
-const fileupload=require('express-fileupload')
+const fileupload=require('express-fileupload');
+const addCatagory = require('./api/v1/category/addCategory');
 const dotenv=require('dotenv').config()
 const corsOptions={
     origin:"http://localhost:3001"
@@ -19,15 +20,23 @@ const corsOptions={
 app.use(fileupload({
   useTempFiles: true
 }));
-
 app.use(cors(corsOptions));
 
+// Parse JSON & files
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(fileupload({ useTempFiles: true }));
+
+// Seed admin account
 const seedAdmin = async () => {
   const [admin] = await db.query('SELECT * FROM user WHERE userrole=?', ['admin']);
   if (admin.length === 0) {
     try {
       const hashpassword = await bcrypt.hash('admin', 10);
-      await db.query('INSERT INTO user (accountname,email,accountpassword,userrole) VALUES (?,?,?,?)', ['admin', 'admin@gmail.com', hashpassword, 'admin']);
+      await db.query(
+        'INSERT INTO user (accountname,email,accountpassword,userrole) VALUES (?,?,?,?)',
+        ['admin', 'admin@gmail.com', hashpassword, 'admin']
+      );
       console.log('Admin seeded');
     } catch (err) {
       console.log(err);
@@ -36,16 +45,13 @@ const seedAdmin = async () => {
 };
 seedAdmin();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(fileupload({ useTempFiles: true }));
-
+// Routes
 app.use('/user', userRoute);
-app.use(categores);
-app.use(products);
 app.use('/bussiness', bussinessRoute);
 app.use('/admin', adminRoute);
 app.use('/checkout', checkoutRoute); 
 app.use(cart)
+app.use(categores)
+app.use(products)
 
 module.exports = app;
