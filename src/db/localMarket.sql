@@ -58,7 +58,8 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE placedorders (
-    itemId INT PRIMARY KEY,
+    id int primary key auto_increment,
+    itemId INT ,
     userId INT,
     created_at TIMESTAMP default current_timestamp,
     FOREIGN KEY (userId) REFERENCES user(id),

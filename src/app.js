@@ -17,9 +17,7 @@ const dotenv=require('dotenv').config()
 const corsOptions={
     origin:"http://localhost:3001"
 }
-app.use(fileupload({
-  useTempFiles: true
-}));
+
 app.use(cors(corsOptions));
 
 // Parse JSON & files
