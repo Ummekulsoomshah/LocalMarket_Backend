@@ -21,6 +21,7 @@ CREATE TABLE items (
     title VARCHAR(255),
     userid INT,
     categId INT,
+    tags text,
     created_at TIMESTAMP default current_timestamp,
     FOREIGN KEY (userid) REFERENCES user(id),
     FOREIGN KEY (categId) REFERENCES categories(id)
